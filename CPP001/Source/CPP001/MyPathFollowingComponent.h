@@ -10,4 +10,5 @@ class CPP001_API UMyPathFollowingComponent : public UPathFollowingComponent {
 
 	GENERATED_BODY()
 	
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };

@@ -2,5 +2,6 @@
 
 
 #include "MyAIController.h"
+#include "MyPathFollowingComponent.h"
 
-AMyAIController::AMyAIController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
+AMyAIController::AMyAIController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UMyPathFollowingComponent>(TEXT("PathFollowingComponent"))) {}
