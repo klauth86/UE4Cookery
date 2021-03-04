@@ -2,14 +2,14 @@
 
 
 #include "GameMenuWidget.h"
-#include "MyDefaultPawn.h"
+#include "UIDelegates.h"
 
 void UGameMenuWidget::NativeConstruct() {
 	Super::NativeConstruct();
-	AMyDefaultPawn::OnToggleMenu.AddUObject(this, &UGameMenuWidget::OnToggleMenu);
+	UIDelegates::OnToggleMenu.AddUObject(this, &UGameMenuWidget::OnToggleMenu);
 }
 
 void UGameMenuWidget::NativeDestruct() {
-	AMyDefaultPawn::OnToggleMenu.RemoveAll(this);
+	UIDelegates::OnToggleMenu.RemoveAll(this);
 	Super::NativeDestruct();
 }
