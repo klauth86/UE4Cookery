@@ -17,7 +17,7 @@ public class CPP003Editor : ModuleRules {
 		PublicDependencyModuleNames.AddRange(new string[] { "Core" });
 
 		// ... add private dependencies that you statically link with here ...	
-		PrivateDependencyModuleNames.AddRange(new string[] { "CPP003" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "UnrealEd", "CPP003", "Engine" });
 
 		// ... add any modules that your module loads dynamically here ...
 		DynamicallyLoadedModuleNames.AddRange(new string[] { });

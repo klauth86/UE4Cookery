@@ -15,7 +15,10 @@
 		{
 			"Name": "CPP003Editor",
 			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "PostEngineInit",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
 		}
 	]
 }
