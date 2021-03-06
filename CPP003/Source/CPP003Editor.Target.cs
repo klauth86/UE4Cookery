@@ -9,6 +9,6 @@ public class CPP003EditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 
-		ExtraModuleNames.AddRange( new string[] { "CPP003" } );
+		ExtraModuleNames.AddRange( new string[] { "CPP003Editor" } );
 	}
 }
