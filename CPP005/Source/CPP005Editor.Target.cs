@@ -9,6 +9,6 @@ public class CPP005EditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "CPP005" } );
+		ExtraModuleNames.AddRange( new string[] { "CPP005Editor" } );
 	}
 }
