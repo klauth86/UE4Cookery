@@ -5,7 +5,7 @@
 #include "MyDictionary.generated.h"
 
 USTRUCT()
-struct FMyDictionary {
+struct CPP005_API FMyDictionary {
 
 	GENERATED_USTRUCT_BODY();
 
