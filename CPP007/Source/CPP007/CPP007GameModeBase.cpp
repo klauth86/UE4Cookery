@@ -49,30 +49,72 @@ void ACPP007GameModeBase::BeginPlay() {
 		}
 	}
 
-	auto localPlayer = controller->GetLocalPlayer();
-	auto ViewportClient = world->GetGameViewport();
+	if (auto ViewportClient = world->GetGameViewport()) {
 
-	if (localPlayer && ViewportClient) {
-		if (auto manager = ViewportClient->GetGameLayerManager()) {
+		if (ViewportWidgetClass_n10) {
+			ViewportWidget_n10 = CreateWidget<UUserWidget>(world, ViewportWidgetClass_n10);
+			if (ViewportWidget_n10) {
+				ViewportClient->AddViewportWidgetContent(ViewportWidget_n10->TakeWidget(), -10);
+			}
+		}
 
-			if (LayerManagerWidgetClass_n10 && controller) {
-				LayerManagerWidget_n10 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_n10);
-				if (LayerManagerWidget_n10) {
-					manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_n10->TakeWidget(), 0);
+		if (ViewportWidgetClass_0) {
+			ViewportWidget_0 = CreateWidget<UUserWidget>(world, ViewportWidgetClass_0);
+			if (ViewportWidget_0) {
+				ViewportClient->AddViewportWidgetContent(ViewportWidget_0->TakeWidget());
+			}
+		}
+
+		if (ViewportWidgetClass_p10) {
+			ViewportWidget_p10 = CreateWidget<UUserWidget>(world, ViewportWidgetClass_p10);
+			if (ViewportWidget_p10) {
+				ViewportClient->AddViewportWidgetContent(ViewportWidget_p10->TakeWidget(), 10);
+			}
+		}
+
+		if (auto localPlayer = controller->GetLocalPlayer()) {
+			if (ViewportWidgetForPlayerClass_n10) {
+				ViewportWidgetForPlayer_n10 = CreateWidget<UUserWidget>(world, ViewportWidgetForPlayerClass_n10);
+				if (ViewportWidgetForPlayer_n10) {
+					ViewportClient->AddViewportWidgetForPlayer(localPlayer, ViewportWidgetForPlayer_n10->TakeWidget(), -10);
 				}
 			}
 
-			if (LayerManagerWidgetClass_0 && controller) {
-				LayerManagerWidget_0 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_0);
-				if (LayerManagerWidget_0) {
-					manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_0->TakeWidget(), 0);
+			if (ViewportWidgetForPlayerClass_0) {
+				ViewportWidgetForPlayer_0 = CreateWidget<UUserWidget>(world, ViewportWidgetForPlayerClass_0);
+				if (ViewportWidgetForPlayer_0) {
+					ViewportClient->AddViewportWidgetForPlayer(localPlayer, ViewportWidgetForPlayer_0->TakeWidget(), 0);
 				}
 			}
 
-			if (LayerManagerWidgetClass_p10 && controller) {
-				LayerManagerWidget_p10 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_p10);
-				if (LayerManagerWidget_p10) {
-					manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_p10->TakeWidget(), 0);
+			if (ViewportWidgetForPlayerClass_p10) {
+				ViewportWidgetForPlayer_p10 = CreateWidget<UUserWidget>(world, ViewportWidgetForPlayerClass_p10);
+				if (ViewportWidgetForPlayer_p10) {
+					ViewportClient->AddViewportWidgetForPlayer(localPlayer, ViewportWidgetForPlayer_p10->TakeWidget(), 10);
+				}
+			}
+
+			if (auto manager = ViewportClient->GetGameLayerManager()) {
+
+				if (LayerManagerWidgetClass_n10 && controller) {
+					LayerManagerWidget_n10 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_n10);
+					if (LayerManagerWidget_n10) {
+						manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_n10->TakeWidget(), 0);
+					}
+				}
+
+				if (LayerManagerWidgetClass_0 && controller) {
+					LayerManagerWidget_0 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_0);
+					if (LayerManagerWidget_0) {
+						manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_0->TakeWidget(), 0);
+					}
+				}
+
+				if (LayerManagerWidgetClass_p10 && controller) {
+					LayerManagerWidget_p10 = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass_p10);
+					if (LayerManagerWidget_p10) {
+						manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget_p10->TakeWidget(), 0);
+					}
 				}
 			}
 		}
