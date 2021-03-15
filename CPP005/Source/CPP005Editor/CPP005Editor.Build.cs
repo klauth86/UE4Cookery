@@ -17,7 +17,7 @@ public class CPP005Editor : ModuleRules {
 		PublicDependencyModuleNames.AddRange(new string[] { "Core" });
 
 		// ... add private dependencies that you statically link with here ...	
-		PrivateDependencyModuleNames.AddRange(new string[] { "CPP005" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "CPP005", "PropertyEditor" });
 
 		// ... add any modules that your module loads dynamically here ...
 		DynamicallyLoadedModuleNames.AddRange(new string[] { });
