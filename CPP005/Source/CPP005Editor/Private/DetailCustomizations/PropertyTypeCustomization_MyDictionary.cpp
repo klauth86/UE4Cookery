@@ -54,14 +54,11 @@ FString FPropertyTypeCustomization_MyDictionary::OnGetText() const {
 }
 
 void FPropertyTypeCustomization_MyDictionary::ComboBoxSelectionChanged(TSharedPtr<int32> NewSelection, ESelectInfo::Type /*SelectInfo*/) {
-	//if (NewSelection.IsValid()) {
-
-	//	FStructProperty* StructProperty = CastField<FStructProperty>(StructPropertyHandle->GetProperty());
-
-	//	if (auto replica = GetPropertyAs<FReplica>()) {
-	//		replica->Index = *NewSelection;
-	//	}
-	//}
+	if (NewSelection.IsValid()) {
+		if (auto myDictionary = GetPropertyAs<FMyDictionary>()) {
+			myDictionary->ItemIndex = *NewSelection;
+		}
+	}
 }
 
 FText FPropertyTypeCustomization_MyDictionary::OnGetFriendlyName(int32 itemIndex) {
