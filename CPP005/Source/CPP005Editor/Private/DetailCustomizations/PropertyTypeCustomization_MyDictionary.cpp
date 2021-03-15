@@ -20,7 +20,9 @@ void FPropertyTypeCustomization_MyDictionary::CustomizeHeader(TSharedRef<IProper
 	TArray< TSharedPtr<int32> > ComboItems;
 	GenerateComboBoxIndexes(ComboItems);
 
-	SAssignNew(ComboBox, SPinComboBox)
+	UE_LOG(LogTemp, Warning, TEXT("FPropertyTypeCustomization_MyDictionary"))
+
+	ComboBox = SNew(SPinComboBox)
 		.ComboItemList(ComboItems)
 		.VisibleText(this, &FPropertyTypeCustomization_MyDictionary::OnGetText)
 		.OnSelectionChanged(this, &FPropertyTypeCustomization_MyDictionary::ComboBoxSelectionChanged)
