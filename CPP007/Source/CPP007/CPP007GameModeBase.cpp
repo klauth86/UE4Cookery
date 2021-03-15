@@ -13,14 +13,14 @@ void ACPP007GameModeBase::BeginPlay() {
 	auto world = GetWorld();
 
 	if (AddToViewportWidgetClass) {
-		if (auto AddToViewportWidget = CreateWidget<UUserWidget>(world)) {
+		if (auto AddToViewportWidget = CreateWidget<UUserWidget>(world, AddToViewportWidgetClass)) {
 			AddToViewportWidget->AddToViewport();
 		}
 	}
 
 	auto controller = UGameplayStatics::GetPlayerController(this, 0);
 	if (AddToPlayerScreenWidgetClass && controller) {
-		if (auto AddToPlayerScreenWidget = CreateWidget<UUserWidget>(controller)) {
+		if (auto AddToPlayerScreenWidget = CreateWidget<UUserWidget>(controller, AddToPlayerScreenWidgetClass)) {
 			AddToPlayerScreenWidget->AddToPlayerScreen();
 		}
 	}
@@ -30,9 +30,9 @@ void ACPP007GameModeBase::BeginPlay() {
 			if (auto ViewportClient = world->GetGameViewport()) {
 				if (auto manager = ViewportClient->GetGameLayerManager()) {
 					
-					LayerManagerWidget = CreateWidget<UUserWidget>(controller);
-					if (LayerManagerWidget) {
-						manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget->GetCachedWidget().ToSharedRef(), 0);
+					LayerManagerWidget = CreateWidget<UUserWidget>(controller, LayerManagerWidgetClass);
+					if (LayerManagerWidget) {						
+						manager->AddWidgetForPlayer(localPlayer, LayerManagerWidget->TakeWidget(), 0);
 					}
 				}
 			}
