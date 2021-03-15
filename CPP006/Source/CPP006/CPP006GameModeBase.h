@@ -2,13 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "CPP006GameModeBase.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class CPP006_API ACPP006GameModeBase : public AGameModeBase
 {

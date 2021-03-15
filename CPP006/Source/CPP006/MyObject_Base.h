@@ -2,14 +2,10 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "MyObject_Base.generated.h"
 
-/**
- * 
- */
-UCLASS()
+UCLASS(Abstract, BlueprintType, EditInlineNew)
 class CPP006_API UMyObject_Base : public UObject
 {
 	GENERATED_BODY()
