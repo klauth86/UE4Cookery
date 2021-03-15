@@ -12,6 +12,11 @@
 				"CoreUObject",
 				"Engine"
 			]
+		},
+		{
+			"Name": "CPP005Editor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
 		}
 	]
 }
