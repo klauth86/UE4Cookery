@@ -5,11 +5,7 @@
 #include "Blueprint/UserWidget.h"
 
 // Sets default values
-AActorWithWorldWidget::AActorWithWorldWidget()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+AActorWithWorldWidget::AActorWithWorldWidget() {
 	LayerName = FName(StaticClass()->GetName());
 	LayerZOrder = -100;
 	DrawSize = FIntPoint(512, 512);
