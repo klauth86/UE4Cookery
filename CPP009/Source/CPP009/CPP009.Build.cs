@@ -11,7 +11,7 @@ public class CPP009 : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] { Path.Combine(ModuleDirectory, "") });
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "SlateCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "SlateCore", "Slate" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
