@@ -17,7 +17,7 @@ public class CPP009Editor : ModuleRules {
 		PublicDependencyModuleNames.AddRange(new string[] { "Core" });
 
 		// ... add private dependencies that you statically link with here ...	
-		PrivateDependencyModuleNames.AddRange(new string[] { "CPP009" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "CoreUObject", "CPP009", "AssetTools" });
 
 		// ... add any modules that your module loads dynamically here ...
 		DynamicallyLoadedModuleNames.AddRange(new string[] { });
