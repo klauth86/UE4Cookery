@@ -8,6 +8,11 @@
 			"Name": "CPP009",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "CPP009Editor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
 		}
 	]
 }
