@@ -18,11 +18,13 @@ void FCPP009EditorModule::StartupModule() {
 }
 
 void FCPP009EditorModule::ShutdownModule() {
-	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
-	for (auto& registeredAssetTypeAction : RegisteredAssetTypeActions) {
-		if (registeredAssetTypeAction.IsValid()) {
-			AssetTools.UnregisterAssetTypeActions(registeredAssetTypeAction.ToSharedRef());
-			registeredAssetTypeAction.Reset();
+	if (FModuleManager::Get().IsModuleLoaded("AssetTools")) {
+		IAssetTools& AssetTools = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools").Get();
+		for (auto& registeredAssetTypeAction : RegisteredAssetTypeActions) {
+			if (registeredAssetTypeAction.IsValid()) {
+				AssetTools.UnregisterAssetTypeActions(registeredAssetTypeAction.ToSharedRef());
+				registeredAssetTypeAction.Reset();
+			}
 		}
 	}
 }
