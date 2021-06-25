@@ -2,12 +2,7 @@
 
 #include "SMaskedImage.h"
 #include "Widgets/Images/SImage.h"
-#include "Rendering/DrawElements.h"
-#include "Widgets/IToolTip.h"
-#include "Rendering/SlateRenderer.h"
-#include "UObject/UObjectGlobals.h"
 #include "ImageUtils.h"
-#include "Engine/Texture2D.h"
 #include "Engine/TextureRenderTarget2D.h"
 #include "Slate/WidgetRenderer.h"
 
@@ -62,20 +57,51 @@ int32 SMaskedImage::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 void SMaskedImage::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) {
 	SLeafWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
 
-	if (!MaskedTexturePtr.IsValid()) {
-		
-		auto localSize = AllottedGeometry.GetLocalSize();
-		
-		auto widgetRenderer = new FWidgetRenderer(true);
-		auto ImageRenderTarget2D = widgetRenderer->DrawWidget(SNew(SImage).Image(Image), localSize);	
+	const FSlateBrush* ImageBrush = Image.GetImage().Get();
+	const FSlateBrush* MaskImageBrush = MaskImage.GetImage().Get();
 
-		auto widgetRenderer2 = new FWidgetRenderer(true);
-		auto MaskImageRenderTarget2D = widgetRenderer2->DrawWidget(SNew(SImage).Image(MaskImage), localSize);
+	if ((ImageBrush != nullptr) && (ImageBrush->DrawAs != ESlateBrushDrawType::NoDrawType)) {
+		if (MaskImageBrush != nullptr) {
+			if (!MaskedTexturePtr.IsValid()) {
 
-		auto imageTexture = ImageRenderTarget2D->ConstructTexture2D(nullptr, "imageRT", EObjectFlags::RF_Transient);
-		auto maskImageTexture = MaskImageRenderTarget2D->ConstructTexture2D(nullptr, "maskImageRT", EObjectFlags::RF_Transient);
+				auto localSize = AllottedGeometry.GetLocalSize();
 
+				auto widgetRenderer = new FWidgetRenderer(true);
+				auto imageRenderTarget2D = widgetRenderer->DrawWidget(SNew(SImage).Image(ImageBrush), localSize);
+				auto imageTexture = imageRenderTarget2D->ConstructTexture2D(nullptr, "imageRT", EObjectFlags::RF_Transient);
 
+				auto widgetRenderer2 = new FWidgetRenderer(true);
+				auto maskImageRenderTarget2D = widgetRenderer2->DrawWidget(SNew(SImage).Image(MaskImageBrush), localSize);
+				auto maskImageTexture = maskImageRenderTarget2D->ConstructTexture2D(nullptr, "maskImageRT", EObjectFlags::RF_Transient);
+
+				auto sizeX = imageTexture->GetSizeX();
+				auto sizeY = imageTexture->GetSizeY();
+				auto size = sizeX * sizeY;
+
+				TArray<FColor> maskedData;
+				maskedData.SetNum(size);
+
+				FColor* imageMipData = reinterpret_cast<FColor*>(imageTexture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_ONLY));
+				FColor* maskImageMipData = reinterpret_cast<FColor*>(maskImageTexture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_ONLY));
+				if (imageMipData && maskImageMipData) {
+					for (size_t i = 0; i < size; i++) {
+						maskedData[i].R = imageMipData[i].R;
+						maskedData[i].G = imageMipData[i].G;
+						maskedData[i].B = imageMipData[i].B;
+						maskedData[i].A = imageMipData[i].A * maskImageMipData[i].A;
+					}
+				}
+				imageTexture->PlatformData->Mips[0].BulkData.Unlock();
+				maskImageTexture->PlatformData->Mips[0].BulkData.Unlock();
+
+				FCreateTexture2DParameters params;
+				auto texture = FImageUtils::CreateTexture2D(sizeX, sizeY, maskedData, nullptr, "MyTexture", EObjectFlags::RF_NoFlags, params);
+				MaskedBrush.SetResourceObject(texture);
+
+				texture->AddToRoot();
+				MaskedTexturePtr = texture;
+			}
+		}
 	}
 
 	SetCanTick(false);

@@ -3,11 +3,6 @@
 #pragma once
 
 #include "Widgets/SLeafWidget.h"
-#include "Widgets/DeclarativeSyntaxSupport.h"
-#include "Styling/CoreStyle.h"
-#include "Styling/SlateColor.h"
-#include "Misc/Attribute.h"
-#include "Input/Reply.h"
 
 class UTexture2D;
 
