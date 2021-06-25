@@ -1,10 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SMaskedImage.h"
+#include "Widgets/Images/SImage.h"
 #include "Rendering/DrawElements.h"
 #include "Widgets/IToolTip.h"
 #include "Rendering/SlateRenderer.h"
 #include "UObject/UObjectGlobals.h"
+#include "ImageUtils.h"
+#include "Engine/Texture2D.h"
+#include "Engine/TextureRenderTarget2D.h"
+#include "Slate/WidgetRenderer.h"
 
 void SMaskedImage::Construct(const FArguments& InArgs) {
 	Image = FInvalidatableBrushAttribute(InArgs._Image);
@@ -56,6 +61,22 @@ int32 SMaskedImage::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeo
 
 void SMaskedImage::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime) {
 	SLeafWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
+
+	if (!MaskedTexturePtr.IsValid()) {
+		
+		auto localSize = AllottedGeometry.GetLocalSize();
+		
+		auto widgetRenderer = new FWidgetRenderer(true);
+		auto ImageRenderTarget2D = widgetRenderer->DrawWidget(SNew(SImage).Image(Image), localSize);	
+
+		auto widgetRenderer2 = new FWidgetRenderer(true);
+		auto MaskImageRenderTarget2D = widgetRenderer2->DrawWidget(SNew(SImage).Image(MaskImage), localSize);
+
+		auto imageTexture = ImageRenderTarget2D->ConstructTexture2D(nullptr, "imageRT", EObjectFlags::RF_Transient);
+		auto maskImageTexture = MaskImageRenderTarget2D->ConstructTexture2D(nullptr, "maskImageRT", EObjectFlags::RF_Transient);
+
+
+	}
 
 	SetCanTick(false);
 }
