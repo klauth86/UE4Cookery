@@ -97,7 +97,7 @@ void SMaskedImage::Tick(const FGeometry& AllottedGeometry, const double InCurren
 				params.bUseAlpha = true;
 				params.bDeferCompression = true;
 
-				auto texture = FImageUtils::CreateTexture2D(sizeX, sizeY, maskedData, nullptr, "MyTexture", EObjectFlags::RF_NoFlags, params);
+				auto texture = FImageUtils::CreateTexture2D(sizeX, sizeY, maskedData, GetTransientPackage(), "MyTexture", EObjectFlags::RF_NoFlags, params);
 				MaskedBrush = FSlateBrush();
 				MaskedBrush.SetResourceObject(texture);
 
