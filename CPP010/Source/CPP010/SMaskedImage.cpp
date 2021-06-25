@@ -89,7 +89,7 @@ void SMaskedImage::Tick(const FGeometry& AllottedGeometry, const double InCurren
 						maskedData[i].R = imageData[i].R;
 						maskedData[i].G = imageData[i].G;
 						maskedData[i].B = imageData[i].B;
-						maskedData[i].A = imageData[i].A * maskImageData[i].A;
+						maskedData[i].A = imageData[i].A * maskImageData[i].A / 255;
 					}
 				}
 
