@@ -12,6 +12,7 @@ void SMaskedImage::Construct(const FArguments& InArgs) {
 	ColorAndOpacity = InArgs._ColorAndOpacity;
 	bFlipForRightToLeftFlowDirection = InArgs._FlipForRightToLeftFlowDirection;
 	SetOnMouseButtonDown(InArgs._OnMouseButtonDown);
+	SetCanTick(true);
 }
 
 int32 SMaskedImage::OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const {
@@ -66,36 +67,38 @@ void SMaskedImage::Tick(const FGeometry& AllottedGeometry, const double InCurren
 
 				auto localSize = AllottedGeometry.GetLocalSize();
 
+				TArray<FColor> imageData;
 				auto widgetRenderer = new FWidgetRenderer(true);
 				auto imageRenderTarget2D = widgetRenderer->DrawWidget(SNew(SImage).Image(ImageBrush), localSize);
-				auto imageTexture = imageRenderTarget2D->ConstructTexture2D(nullptr, "imageRT", EObjectFlags::RF_Transient);
+				imageRenderTarget2D->GameThread_GetRenderTargetResource()->ReadPixels(imageData);
 
+				TArray<FColor> maskImageData;
 				auto widgetRenderer2 = new FWidgetRenderer(true);
 				auto maskImageRenderTarget2D = widgetRenderer2->DrawWidget(SNew(SImage).Image(MaskImageBrush), localSize);
-				auto maskImageTexture = maskImageRenderTarget2D->ConstructTexture2D(nullptr, "maskImageRT", EObjectFlags::RF_Transient);
+				maskImageRenderTarget2D->GameThread_GetRenderTargetResource()->ReadPixels(maskImageData);
 
-				auto sizeX = imageTexture->GetSizeX();
-				auto sizeY = imageTexture->GetSizeY();
+				auto sizeX = imageRenderTarget2D->SizeX;
+				auto sizeY = imageRenderTarget2D->SizeY;
 				auto size = sizeX * sizeY;
 
 				TArray<FColor> maskedData;
 				maskedData.SetNum(size);
 
-				FColor* imageMipData = reinterpret_cast<FColor*>(imageTexture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_ONLY));
-				FColor* maskImageMipData = reinterpret_cast<FColor*>(maskImageTexture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_ONLY));
-				if (imageMipData && maskImageMipData) {
+				if (sizeX > 0 && sizeY > 0) {
 					for (size_t i = 0; i < size; i++) {
-						maskedData[i].R = imageMipData[i].R;
-						maskedData[i].G = imageMipData[i].G;
-						maskedData[i].B = imageMipData[i].B;
-						maskedData[i].A = imageMipData[i].A * maskImageMipData[i].A;
+						maskedData[i].R = imageData[i].R;
+						maskedData[i].G = imageData[i].G;
+						maskedData[i].B = imageData[i].B;
+						maskedData[i].A = imageData[i].A * maskImageData[i].A;
 					}
 				}
-				imageTexture->PlatformData->Mips[0].BulkData.Unlock();
-				maskImageTexture->PlatformData->Mips[0].BulkData.Unlock();
 
 				FCreateTexture2DParameters params;
+				params.bUseAlpha = true;
+				params.bDeferCompression = true;
+
 				auto texture = FImageUtils::CreateTexture2D(sizeX, sizeY, maskedData, nullptr, "MyTexture", EObjectFlags::RF_NoFlags, params);
+				MaskedBrush = FSlateBrush();
 				MaskedBrush.SetResourceObject(texture);
 
 				texture->AddToRoot();
