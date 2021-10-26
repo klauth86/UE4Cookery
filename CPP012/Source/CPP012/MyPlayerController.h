@@ -9,4 +9,8 @@ UCLASS()
 class CPP012_API AMyPlayerController : public APlayerController {
 
 	GENERATED_UCLASS_BODY()
+
+protected:
+
+	virtual TSharedPtr<class SVirtualJoystick> CreateVirtualJoystick();
 };
