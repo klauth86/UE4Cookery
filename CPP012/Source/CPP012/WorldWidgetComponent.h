@@ -115,14 +115,6 @@ public:
 	 */
 	virtual void SetSlateWidget(const TSharedPtr<SWidget>& InSlateWidget);
 
-	/**
-	 * Sets the local player that owns this widget component.  Setting the owning player controls
-	 * which player's viewport the widget appears on in a split screen scenario.  Additionally it
-	 * forwards the owning player to the actual UserWidget that is spawned.
-	 */
-	UFUNCTION(BlueprintCallable, Category = UserInterface)
-		void SetOwnerPlayer(ULocalPlayer* LocalPlayer);
-
 	/** @see bManuallyRedraw */
 	UFUNCTION(BlueprintCallable, Category = UserInterface)
 		bool GetManuallyRedraw() const {
@@ -132,10 +124,6 @@ public:
 	/** @see bManuallyRedraw */
 	UFUNCTION(BlueprintCallable, Category = UserInterface)
 		void SetManuallyRedraw(bool bUseManualRedraw);
-
-	/** Gets the local player that owns this widget component. */
-	UFUNCTION(BlueprintCallable, Category = UserInterface)
-		ULocalPlayer* GetOwnerPlayer() const;
 
 	/** Returns the "specified" draw size of the quad in the world */
 	UFUNCTION(BlueprintCallable, Category = UserInterface)
@@ -234,9 +222,6 @@ public:
 	void SetEditTimeUsable(bool Value) { bEditTimeUsable = Value; }
 
 	bool GetReceiveHardwareInput() const { return bReceiveHardwareInput; }
-
-	/** Sets shared layer name used when this widget is initialized */
-	void SetInitialSharedLayerName(FName NewSharedLayerName) { SharedLayerName = NewSharedLayerName; }
 
 	/** @see bWindowFocusable */
 	UFUNCTION(BlueprintCallable, Category = UserInterface)
@@ -374,13 +359,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category = UserInterface, AdvancedDisplay)
 		bool bApplyGammaCorrection;
 
-	/**
-	 * The owner player for a widget component, if this widget is drawn on the screen, this controls
-	 * what player's screen it appears on for split screen, if not set, users player 0.
-	 */
-	UPROPERTY()
-		ULocalPlayer* OwnerPlayer;
-
 	/** The background color of the component */
 	UPROPERTY(EditAnywhere, Category = Rendering)
 		FLinearColor BackgroundColor;
@@ -448,10 +426,6 @@ protected:
 		bool bEditTimeUsable;
 
 protected:
-
-	/** Layer Name the widget will live on */
-	UPROPERTY(EditDefaultsOnly, Category = Layers)
-		FName SharedLayerName;
 
 	UPROPERTY(EditAnywhere, Category = UserInterface)
 		ETickMode TickMode;

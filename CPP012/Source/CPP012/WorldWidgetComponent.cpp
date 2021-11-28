@@ -393,7 +393,6 @@ UWorldWidgetComponent::UWorldWidgetComponent(const FObjectInitializer& PCIP)
 	, BlendMode(EWidgetBlendMode::Masked)
 	, bIsTwoSided(false)
 	, TickWhenOffscreen(false)
-	, SharedLayerName(TEXT("WidgetComponentScreenLayer"))
 	, TickMode(ETickMode::Enabled)
 	, bRenderCleared(false)
 	, bOnWidgetVisibilityChangedRegistered(false) {
@@ -1034,29 +1033,8 @@ void UWorldWidgetComponent::InitWidget() {
 	}
 }
 
-void UWorldWidgetComponent::SetOwnerPlayer(ULocalPlayer* LocalPlayer) {
-	if (OwnerPlayer != LocalPlayer) {
-		OwnerPlayer = LocalPlayer;
-	}
-}
-
 void UWorldWidgetComponent::SetManuallyRedraw(bool bUseManualRedraw) {
 	bManuallyRedraw = bUseManualRedraw;
-}
-
-ULocalPlayer* UWorldWidgetComponent::GetOwnerPlayer() const {
-	if (OwnerPlayer) {
-		return OwnerPlayer;
-	}
-
-	if (UWorld* LocalWorld = GetWorld()) {
-		UGameInstance* GameInstance = LocalWorld->GetGameInstance();
-		check(GameInstance);
-
-		return GameInstance->GetFirstGamePlayer();
-	}
-
-	return nullptr;
 }
 
 UUserWidget* UWorldWidgetComponent::GetWidget() const {
