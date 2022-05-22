@@ -9,4 +9,10 @@ UCLASS()
 class CPP011_A_API AMyDefaultPawn : public ADefaultPawn
 {
 	GENERATED_BODY()	
+
+protected:
+
+	virtual void SetupPlayerInputComponent(UInputComponent* InInputComponent) override;
+
+	void OnPause();
 };
