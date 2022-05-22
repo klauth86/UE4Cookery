@@ -12,7 +12,7 @@ void AMyDefaultPawn::SetupPlayerInputComponent(UInputComponent* InInputComponent
 
 	UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(InputAction_Pause, EKeys::P));
 
-	InInputComponent->BindAction(InputAction_Pause, EInputEvent::IE_Pressed, this, &AMyDefaultPawn::OnPause);
+	InInputComponent->BindAction(InputAction_Pause, EInputEvent::IE_Pressed, this, &AMyDefaultPawn::OnPause).bExecuteWhenPaused = true;
 }
 
 void AMyDefaultPawn::OnPause()
